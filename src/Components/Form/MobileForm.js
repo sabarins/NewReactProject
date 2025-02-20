@@ -405,7 +405,7 @@ const MobileForm = ({ setFormdatas }) => {
 
         {/* succeess message  */}
         <Box
-          sx={{ display: "flex", justifyContent: "center", columnGap: "10px",mt:-2 }}
+          sx={{ display: {xs:"flex",md:"none",lg:'none'}, justifyContent: "center", columnGap: "10px",mt:-2 }}
         >
           {successmessage && (
             <>

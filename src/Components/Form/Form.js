@@ -52,7 +52,7 @@ const Form = ({ setFormdatas }) => {
     } else if (formdata.password == formdata.confirmpassword) {
       setPasswordmatch([]);
     }
-
+    
     if (currentyear - 18 < formdata.dob?.split("-")[0]) {
       setDobage("Must be 18 years old");
       validationchecks.dobage = "not valid";
@@ -113,16 +113,25 @@ const Form = ({ setFormdatas }) => {
 
       // creating object for form datas
       const userformdatas = Object.fromEntries(data.entries());
-      // let decryptpwd = userformdatas.password;
 
       // hashing the password using bcrypt
-      // let hashpassword = bcrypt.hashSync(userformdatas.password,10);
-      // userformdatas.password = hashpassword;
-      // let hashconfirmpassword = bcrypt.hashSync(userformdatas.confirmpassword,10);
-      // userformdatas.confirmpassword = hashconfirmpassword;
+      bcrypt.genSalt(10,(err,salt)=>
+      {
+        if(!err)
+        {
+          bcrypt.hash(userformdatas.password,salt,(error,hashpassword)=>
+          {
+            if(!error)
+            {
+              userformdatas.password = hashpassword
+            }
+          })
+        }
+      })
 
       // check validation
-      if (handleValidation(userformdatas)) {
+      if (handleValidation(userformdatas)) 
+      {
         console.log("Success validated!");
 
         // if successfull stored in state

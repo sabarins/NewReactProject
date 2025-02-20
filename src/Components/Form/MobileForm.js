@@ -116,14 +116,16 @@ const MobileForm = ({ setFormdatas }) => {
       // creating object for form datas
       const userformdatas = Object.fromEntries(data.entries());
 
-      // // hashing the password using bcrypt
-      // let hashpassword = bcrypt.hashSync(userformdatas.password, 10);
-      // userformdatas.password = hashpassword;
-      // let hashconfirmpassword = bcrypt.hashSync(
-      //   userformdatas.confirmpassword,
-      //   10
-      // );
-      // userformdatas.confirmpassword = hashconfirmpassword;
+      // hashing the password using bcrypt
+      bcrypt.genSalt(10, (err, salt) => {
+        if (!err) {
+          bcrypt.hash(userformdatas.password, salt, (error, hashpassword) => {
+            if (!error) {
+              userformdatas.password = hashpassword;
+            }
+          });
+        }
+      });
 
       // check validation
       if (handleValidation(userformdatas)) {
@@ -150,7 +152,10 @@ const MobileForm = ({ setFormdatas }) => {
   return (
     <>
       {/* Mobile form layout  */}
-      <form onSubmit={handleSubmit} style={{ display: "grid", rowGap: "20px",marginBottom:"20px" }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "grid", rowGap: "20px", marginBottom: "20px" }}
+      >
         <Container
           sx={{
             display: "flex",
@@ -405,7 +410,12 @@ const MobileForm = ({ setFormdatas }) => {
 
         {/* succeess message  */}
         <Box
-          sx={{ display: {xs:"flex",md:"none",lg:'none'}, justifyContent: "center", columnGap: "10px",mt:-2 }}
+          sx={{
+            display: { xs: "flex", md: "none", lg: "none" },
+            justifyContent: "center",
+            columnGap: "10px",
+            mt: -2,
+          }}
         >
           {successmessage && (
             <>

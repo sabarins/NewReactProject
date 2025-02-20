@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import Form from './Components/Form';
 import {BrowserRouter,Router,Routes,Route} from 'react-router-dom'
-import Formdetail from './Components/Formdetail';
+import Register from './Components/Register/Register';
 
 function App() {
   return (
@@ -11,8 +10,7 @@ function App() {
 
       <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Form />} />
-            <Route path='/formdetail' element={<Formdetail />} />
+            <Route path='/' element={<Register />} />
           </Routes>
       </BrowserRouter>
     </div>

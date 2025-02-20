@@ -15,8 +15,11 @@ import WavingHandIcon from "@mui/icons-material/WavingHand";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 
 import loginimg from '../assets/login_img.png'
+import { Link, useNavigate } from "react-router-dom";
 
 function Form(props) {
+
+  const navigate = useNavigate();
   const [usr, setUsr] = useState([]);
   const [email, setEmail] = useState([]);
 
@@ -63,6 +66,10 @@ function Form(props) {
     setPwd(e.target.value);
   };
 
+  const handleSignup = () => {
+    navigate("/signup");
+  };
+
   // const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -96,7 +103,6 @@ function Form(props) {
    
   };
 
-  // console.log(pwd,email);
   return (
     <Stack
     sx={{
@@ -235,12 +241,12 @@ function Form(props) {
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
                   <Typography>
                     Don't you have an account?
-                    <Button
-                      sx={{ textTransform: "none" }}
-                      // onClick={handleSignup}
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={'/register'}
                     >
                       Sign up
-                    </Button>
+                    </Link>
                   </Typography>
                 </Box>
               </form>

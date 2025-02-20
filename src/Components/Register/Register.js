@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -14,8 +14,14 @@ import WavingHandIcon from "@mui/icons-material/WavingHand";
 import register from "../../assets/register.jpg";
 import Form from "../Form/Form";
 import MobileForm from "../Form/MobileForm";
+import { Formdata } from "../../App";
+
 
 function Register(props) {
+
+  const {setFormdatas,formdatas} = useContext(Formdata);
+
+  console.log(formdatas);
 
   return (
     <Stack
@@ -23,18 +29,27 @@ function Register(props) {
         width: "100%",
       }}
     >
-      <Grid container p={2} sx={{ display: "flex" }} columnSpacing={2}>
-
+      <Grid container columnSpacing={2} p={2} height={"100vh"}>
         {/* first layout  */}
         <Grid size={{ lg: 5.5, xs: 12 }}>
-          <Box sx={{ display: "flex", alignContent: "center" }}>
+          <Box
+            sx={{
+              // position: "relative",
+              width: "100%",
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+              height: { xs: "100%", md: "100%", lg: "100%" },
+            }}
+          >
             <img
               src={register}
-              width="100%"
-              height="100%"
+              // width="100%"
               style={{
-                border: "0px solid grey",
                 borderRadius: "10px",
+                objectFit: "cover",
+                width: "100%",
+                height: "100%",
                 boxShadow:
                   "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
               }}
@@ -53,7 +68,7 @@ function Register(props) {
           >
             <Typography
               variant="h4"
-              sx={{ fontWeight: "bold" }}
+              sx={{ fontWeight: "bold",mt:{xs:2,md:0,lg:0} }}
               fontSize={{ xs: "30px" }}
             >
               Welcome to Bow and Baan
@@ -66,18 +81,21 @@ function Register(props) {
               />
             </Typography>
 
-            <Typography variant="h5">Registration Form</Typography>
+            <Box sx={{width:"100%",display:"grid",justifyContent:"center"}}>
+              <Typography variant="h5" sx={{mb:0.5}}>Registration Form</Typography>
+              <Box sx={{borderBottom:"5px solid #fe7140",width:"50%",display:"flex",justifyContent:"center",ml:5,}}></Box>
+            </Box>
             {/* <Divider sx={{color:"#fe7140",mt:-8}} /> */}
 
             {/* Desktop Form Component  */}
-            <Form />
+            <Box sx={{ display: { md: "flex", lg: "flex", xs: "none" } }}>
+              <Form setFormdatas={setFormdatas} />
+            </Box>
 
             {/* Mobile Form Component  */}
-            <MobileForm />
-           
+            <MobileForm setFormdatas={setFormdatas} />
           </Box>
         </Grid>
-
       </Grid>
     </Stack>
   );

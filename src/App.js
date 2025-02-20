@@ -1,18 +1,27 @@
-import './App.css';
-import Form from './Components/Form';
-import {BrowserRouter,Router,Routes,Route} from 'react-router-dom'
-import Register from './Components/Register/Register';
+import "./App.css";
+import Form from "./Components/Form";
+import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
+import Register from "./Components/Register/Register";
+import { createContext, useState } from "react";
+
+export const Formdata = createContext();
 
 function App() {
+
+  const [formdatas, setFormdatas] = useState([]);
+
+  console.log(formdatas);
+
   return (
     <div className="App">
       {/* <Form /> */}
-
-      <BrowserRouter>
+      <Formdata.Provider value={{ formdatas, setFormdatas }}>
+        <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Register />} />
+            <Route path="/" element={<Register />} />
           </Routes>
-      </BrowserRouter>
+        </BrowserRouter>
+      </Formdata.Provider>
     </div>
   );
 }

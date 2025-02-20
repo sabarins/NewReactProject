@@ -13,127 +13,144 @@ import {
   InputAdornment,
 } from "@mui/material";
 
-const MobileForm = () => {
+import DoneIcon from "@mui/icons-material/Done";
+import bcrypt from "bcryptjs";
+
+const MobileForm = ({ setFormdatas }) => {
   const currentyear = new Date().getFullYear();
-    const maxdate = `${currentyear - 18}-12-31`;
-  
-    const [passwordmatch, setPasswordmatch] = useState([]);
-    const [mailformaterr, setMailformaterr] = useState([]);
-    const [dobage, setDobage] = useState([]);
-  
-    const [fnamerequired, setFnamerequired] = useState([]);
-    const [lnamerequired, setLnamerequired] = useState([]);
-    const [emailrequired, setEmailrequired] = useState([]);
-    const [dobrequired, setDobrequired] = useState([]);
-    const [passwordrequired, setPasswordrequired] = useState([]);
-    const [confirmpasswordrequired, setConfirmpasswordrequired] = useState([]);
-  
-    // all user input data stored here 
-    const [regusers, setRegusers] = useState([]);
-  
-    // validation function 
-    const handleValidation = (formdata) => {
-  
-      const validationchecks = {};
-      const mailidreg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-      if (mailidreg.test(formdata.email) == false) {
-        setMailformaterr("Invalid email format");
-        validationchecks.mailformat = 'not valid';
-      } 
-      else{
-        setMailformaterr([]);
+  const maxdate = `${currentyear - 18}-12-31`;
+
+  const [passwordmatch, setPasswordmatch] = useState([]);
+  const [mailformaterr, setMailformaterr] = useState([]);
+  const [dobage, setDobage] = useState([]);
+
+  const [fnamerequired, setFnamerequired] = useState([]);
+  const [lnamerequired, setLnamerequired] = useState([]);
+  const [emailrequired, setEmailrequired] = useState([]);
+  const [dobrequired, setDobrequired] = useState([]);
+  const [passwordrequired, setPasswordrequired] = useState([]);
+  const [confirmpasswordrequired, setConfirmpasswordrequired] = useState([]);
+
+  const [successmessage, setSuccessmessage] = useState(true);
+
+  // all user input data stored here
+  // const [regusers, setRegusers] = useState([]);
+
+  // validation function
+  const handleValidation = (formdata) => {
+    const validationchecks = {};
+    const mailidreg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (mailidreg.test(formdata.email) == false) {
+      setMailformaterr("Invalid email format");
+      validationchecks.mailformat = "not valid";
+    } else {
+      setMailformaterr([]);
+    }
+
+    if (formdata.password != formdata.confirmpassword) {
+      setPasswordmatch("Passwords must match");
+      validationchecks.passwordmatch = "not valid";
+    } else if (formdata.password == formdata.confirmpassword) {
+      setPasswordmatch([]);
+    }
+
+    if (currentyear - 18 < formdata.dob?.split("-")[0]) {
+      setDobage("Must be 18 years old");
+      validationchecks.dobage = "not valid";
+    } else {
+      setDobage([]);
+    }
+
+    if (formdata.fname == "") {
+      setFnamerequired("First Name is required");
+      validationchecks.fname = "not valid";
+    } else if (formdata.fname.length != 0) {
+      setFnamerequired([]);
+    }
+
+    if (formdata.lname == "") {
+      setLnamerequired("Last Name is required");
+      validationchecks.lname = "not valid";
+    } else if (formdata.lname.length != 0) {
+      setLnamerequired([]);
+    }
+
+    if (formdata.email == "") {
+      setEmailrequired("Email is required");
+      validationchecks.email = "not valid";
+    } else if (formdata.email.length != 0) {
+      setEmailrequired([]);
+    }
+
+    if (formdata.dob == "") {
+      setDobrequired("Date of birth is required");
+      validationchecks.dob = "not valid";
+    } else if (formdata.dob.length != 0) {
+      setDobrequired([]);
+    }
+
+    if (formdata.password == "") {
+      setPasswordrequired("Password is required");
+      validationchecks.password = "not valid";
+    } else if (formdata.password.length != 0) {
+      setPasswordrequired([]);
+    }
+
+    if (formdata.confirmpassword == "") {
+      setConfirmpasswordrequired("Confirm Password is required");
+      validationchecks.confirmpassword = "not valid";
+    } else if (formdata.confirmpassword.length != 0) {
+      setConfirmpasswordrequired([]);
+    }
+
+    return Object.keys(validationchecks).length == 0;
+  };
+
+  // Submit function
+  const handleSubmit = (event) => {
+    try {
+      event.preventDefault();
+      const data = new FormData(event.target);
+
+      // creating object for form datas
+      const userformdatas = Object.fromEntries(data.entries());
+
+      // // hashing the password using bcrypt
+      // let hashpassword = bcrypt.hashSync(userformdatas.password, 10);
+      // userformdatas.password = hashpassword;
+      // let hashconfirmpassword = bcrypt.hashSync(
+      //   userformdatas.confirmpassword,
+      //   10
+      // );
+      // userformdatas.confirmpassword = hashconfirmpassword;
+
+      // check validation
+      if (handleValidation(userformdatas)) {
+        console.log("Successfully validated!");
+
+        // if successfull stored in state
+        setFormdatas((users) => [...users, userformdatas]);
+
+        console.log("Successfully created!");
+
+        //show success message for registered
+        setSuccessmessage(true);
+        const showmsg = setTimeout(() => {
+          setSuccessmessage(false);
+        }, 4000);
+
+        event.target.reset();
       }
-  
-      if (formdata.password != formdata.confirmpassword) {
-        setPasswordmatch("Passwords must match");
-        validationchecks.passwordmatch = 'not valid'
-      } else if (formdata.password == formdata.confirmpassword) {
-        setPasswordmatch([]);
-      }
-  
-      if (currentyear - 18 < formdata.dob?.split("-")[0]) {
-        setDobage("Must be 18 years old");
-        validationchecks.dobage = 'not valid'
-      } else {
-        setDobage([]);
-      }
-  
-      if (formdata.fname == '') {
-        setFnamerequired("First Name is required");
-        validationchecks.fname = 'not valid'
-      } else if (formdata.fname.length != 0) {
-        setFnamerequired([]);
-      }
-  
-      if (formdata.lname == "") {
-        setLnamerequired("Last Name is required");
-        validationchecks.lname = 'not valid'
-      } else if (formdata.lname.length != 0) {
-        setLnamerequired([]);
-      }
-  
-      if (formdata.email == "") {
-        setEmailrequired("Email is required");
-        validationchecks.email = 'not valid'
-      } else if (formdata.email.length != 0) {
-        setEmailrequired([]);
-      }
-  
-      if (formdata.dob == "") {
-        setDobrequired("Date of birth is required");
-        validationchecks.dob = 'not valid'
-      } else if (formdata.dob.length != 0) {
-        setDobrequired([]);
-      }
-  
-      if (formdata.password == "") {
-        setPasswordrequired("Password is required");
-        validationchecks.password = 'not valid'
-      } else if (formdata.password.length != 0) {
-        setPasswordrequired([]);
-      }
-  
-      if (formdata.confirmpassword == "") {
-        setConfirmpasswordrequired("Confirm Password is required");
-        validationchecks.confirmpassword = 'not valid'
-      } else if (formdata.confirmpassword.length != 0) {
-        setConfirmpasswordrequired([]);
-      }
-  
-      return Object.keys(validationchecks).length == 0
-    };
-  
-    // Submit function 
-    const handleSubmit = (event) => {
-      try {
-        event.preventDefault();
-        const data = new FormData(event.target);
-  
-        // creating object for form datas
-        const formdatas = Object.fromEntries(data.entries());
-  
-        console.log(Object.fromEntries(data.entries()));
-  
-        // check validation
-        if(handleValidation(formdatas))
-        {
-          console.log("Success validated!");
-          setRegusers((users)=>[...users,formdatas])
-          event.target.reset();
-        }
-  
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    console.log(regusers);
-  
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {/* Mobile form layout  */}
-      <form onSubmit={handleSubmit} style={{ display: "grid", rowGap: "20px" }}>
+      <form onSubmit={handleSubmit} style={{ display: "grid", rowGap: "20px",marginBottom:"20px" }}>
         <Container
           sx={{
             display: "flex",
@@ -371,7 +388,7 @@ const MobileForm = () => {
         </Container>
 
         {/* submit button  */}
-        <Box sx={{display:{md:'none',lg:'none',xs:'grid'}}}>
+        <Box sx={{ display: { md: "none", lg: "none", xs: "grid" }, mb: 2 }}>
           <Button
             sx={{
               bgcolor: "#fe7140",
@@ -384,6 +401,21 @@ const MobileForm = () => {
           >
             Submit
           </Button>
+        </Box>
+
+        {/* succeess message  */}
+        <Box
+          sx={{ display: "flex", justifyContent: "center", columnGap: "10px",mt:-2 }}
+        >
+          {successmessage && (
+            <>
+              {" "}
+              <DoneIcon sx={{ color: "green" }} />
+              <Typography color="green" fontWeight={"bold"}>
+                {"Successfully register!"}
+              </Typography>
+            </>
+          )}
         </Box>
       </form>
     </>

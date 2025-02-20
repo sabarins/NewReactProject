@@ -31,7 +31,7 @@ const MobileForm = ({ setFormdatas }) => {
   const [passwordrequired, setPasswordrequired] = useState([]);
   const [confirmpasswordrequired, setConfirmpasswordrequired] = useState([]);
 
-  const [successmessage, setSuccessmessage] = useState(true);
+  const [successmessage, setSuccessmessage] = useState(false);
 
   // all user input data stored here
   // const [regusers, setRegusers] = useState([]);

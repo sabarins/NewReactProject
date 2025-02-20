@@ -1,5 +1,4 @@
 import "./App.css";
-import Form from "./Components/Form";
 import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
 import Register from "./Components/Register/Register";
 import { createContext, useState } from "react";
